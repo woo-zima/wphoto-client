@@ -9,14 +9,10 @@ export function getQiNiuToken() {
   });
 }
 // 获取图形验证码
-export function verificationCode(t) {
+export function getCaptcha(t) {
   return axios({
-    url: '/captcha/captchaImage',
+    url: `/getCaptcha/${t}`,
     method: 'get',
-    params: {
-      type: 'math',
-      time: t,
-    },
   });
 }
 
@@ -32,17 +28,8 @@ export function login(params) {
 //注册
 export function register(params) {
   return axios({
-    url: '/register',
+    url: '/auth/register',
     method: 'post',
-    transformRequest: [
-      function (data) {
-        return Qs.stringify(data);
-      },
-    ],
-    headers: {
-      deviceCode: 'A95ZEF1-47B5-AC90BF3',
-    },
-    crossDomain: true,
     data: params,
   });
 }

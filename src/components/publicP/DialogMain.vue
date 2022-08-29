@@ -1,6 +1,6 @@
 <template>
     <div class="dialogMain">
-        <el-dialog :modelValue="dialogMainVisible" title="Main" @close="closeDialogHandle">
+        <el-dialog :modelValue="dialogMainVisible" title="PHOTO" @close="closeDialogHandle">
             <div class="photoDetail">
                 <div class="leftImg">
                     <img :src="'http://wphoto.top/' + dialogConfig.dialogItem.purl" style="width:100%" />
@@ -8,7 +8,7 @@
                 <div class="rightMsg">
                     <aside class="detail-author">
                         <section class="headImg-info">
-                            <el-avatar> user </el-avatar>
+                            <el-avatar> {{ state.currentPhoto.uname }} </el-avatar>
                             <h2>{{ state.currentPhoto.uname }}</h2>
                         </section>
                         <section>
@@ -164,6 +164,14 @@ const vaildCommentText = () => {
 }
 
 const sbumitTextarea = () => {
+    if (!store.userDeail.uname) {
+        ElMessage({
+            showClose: true,
+            message: '请先登录再发布评论',
+            type: 'info',
+        })
+        return
+    }
     if (vaildCommentText()) {
         postComment()
         return
@@ -205,7 +213,7 @@ const closeDialogHandle = () => {
 <style >
 .el-dialog {
     width: 80vw !important;
-    background-color: #c0bab2;
+    background-color: rgb(51, 48, 48);
 }
 
 .el-dialog__body {

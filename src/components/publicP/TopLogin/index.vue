@@ -8,8 +8,10 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { loginStore } from '../../../store';
 import { storeToRefs } from 'pinia';
+// import snow from '@/assets/snow.mov'
 const store = loginStore()
 const { loginOrSign } = storeToRefs(store)
 
@@ -19,4 +21,7 @@ const closeHandle = () => {
 </script>
 
 <style>
+.el-input-group__append {
+    padding: 0;
+}
 </style>

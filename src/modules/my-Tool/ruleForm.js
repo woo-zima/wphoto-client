@@ -22,5 +22,11 @@ const resetForm = formEl => {
   if (!formEl) return;
   formEl.resetFields();
 };
-
-export { checkName, validatePass, resetForm };
+const checkCode = (rule, value, callback) => {
+  if (value === '') {
+    callback(new Error('请输入验证码'));
+  } else {
+    callback();
+  }
+};
+export { checkName, validatePass, resetForm, checkCode };

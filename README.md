@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 # wphoto-client
 wphoto vue3 version
-=======
-<<<<<<< HEAD
-# wphoto-client
-wphoto vue3 version
+
 =======
 # Vue 3 + Vite
 
@@ -13,5 +9,4 @@ This template should help get you started developing with Vue 3 in Vite. The tem
 ## Recommended IDE Setup
 
 - [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
->>>>>>> 0bfb56c (20220828)
->>>>>>> be2263b (20220828)
+

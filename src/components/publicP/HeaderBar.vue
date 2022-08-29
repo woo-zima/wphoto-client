@@ -15,7 +15,9 @@
                     <div v-if="store.showUser">
                         <el-dropdown @command="clickMenu">
                             <div>
-                                <el-avatar src="" fit="cover" shape="square" />
+                                <el-avatar fit="cover" shape="square">
+                                    {{ store.userDeail.uname }}
+                                </el-avatar>
                             </div>
                             <template #dropdown>
                                 <el-dropdown-menu>
