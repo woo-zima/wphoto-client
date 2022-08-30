@@ -29,4 +29,5 @@ const checkCode = (rule, value, callback) => {
     callback();
   }
 };
+
 export { checkName, validatePass, resetForm, checkCode };
