@@ -8,8 +8,8 @@
                 <div class="rightMsg">
                     <aside class="detail-author">
                         <section class="headImg-info">
-                            <el-avatar> {{ state.currentPhoto.uname }} </el-avatar>
-                            <h2>{{ state.currentPhoto.uname }}</h2>
+                            <el-avatar> {{  state.currentPhoto.uname  }} </el-avatar>
+                            <h2>{{  state.currentPhoto.uname  }}</h2>
                         </section>
                         <section>
                             <el-button color="#626aef" round>关注</el-button>
@@ -28,13 +28,13 @@
 
             <div class="photo-content">
                 <div class="content-inner">
-                    <h2>ZMZM</h2>
+                    <h2>{{  dialogConfig.dialogItem.pname  }}</h2>
                     <div class="intro">alalalala</div>
                     <div class="tags">
 
                     </div>
                     <ul class="star"></ul>
-                    <div class="data" title="投稿时间"> 2022-08-16</div>
+                    <div class="data" title="投稿时间"> {{  dialogConfig.dialogItem.uptime.slice(0, 10)  }}</div>
 
                 </div>
             </div>
@@ -67,8 +67,8 @@
                                             <el-avatar> user </el-avatar>
                                         </a>
                                         <div>
-                                            <h2>{{ item.user.uname }}</h2>
-                                            <div class="comment-text">{{ item.content }}</div>
+                                            <h2>{{  item.user.uname  }}</h2>
+                                            <div class="comment-text">{{  item.content  }}</div>
                                         </div>
 
                                     </li>
@@ -82,7 +82,7 @@
                             <h3>发布者</h3>
                             <div style="display: flex;">
                                 <el-avatar> user </el-avatar>
-                                <h2 style="margin: 0;padding: 0 10px;">{{ state.currentPhoto.uname }}</h2>
+                                <h2 style="margin: 0;padding: 0 10px;">{{  state.currentPhoto.uname  }}</h2>
 
                             </div>
 
