@@ -23,8 +23,8 @@ const routes = [
     component: () => import('../views/BrowsingList.vue'),
   },
   {
-    path: '/keywords',
-    name: 'keywords',
+    path: '/keyPhotos',
+    name: 'keyPhotos',
     component: () => import('../views/SearchResult.vue'),
   },
   {

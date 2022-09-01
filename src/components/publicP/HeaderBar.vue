@@ -42,8 +42,10 @@
 
 <script setup>
 import { inject, reactive, onMounted, computed } from "vue";
+import { useRouter } from "vue-router";
 import { loginStore } from "../../store";
 
+const router = useRouter();
 const $api = inject('$api')
 const store = loginStore()
 const state = reactive({
@@ -94,11 +96,11 @@ const querySearch = async (queryString, cb) => {
         const queryParams = { queryValue: queryString }
         const { data, status } = await $api.photo.getKeyWorlds(queryParams);
         if (status === 200) {
-            state.queryList = data.map((i) => {
-                return {
-                    value: i.pdescribe
-                }
+            // state.queryList = data.map((i) => {
+            state.queryList.push({
+                value: data.pdescribe.split(' ')[0]
             })
+            // })
             cb(state.queryList)
         } else {
             cb(state.queryList)
@@ -110,7 +112,12 @@ const querySearch = async (queryString, cb) => {
 }
 
 const handleSearch = (item) => {
-    console.log(item)
+    console.log(item);
+    router.push({
+        path: 'keyPhotos',
+        query: { key: item.value }
+    })
+
 }
 
 const setModel = () => {

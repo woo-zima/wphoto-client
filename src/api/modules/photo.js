@@ -37,6 +37,14 @@ function getKeyWorlds(params) {
     params,
   });
 }
+//模糊搜索结果
+function getKeyPhotos(params) {
+  return axios({
+    url: '/photo/getKeyPhotos',
+    method: 'get',
+    params,
+  });
+}
 //图片发布者
 function photoDetail(pid) {
   return axios({
@@ -47,4 +55,4 @@ function photoDetail(pid) {
     },
   });
 }
-export { getPhotoList, getRankByKey, addPhoto, getKeyWorlds, photoDetail };
+export { getPhotoList, getRankByKey, addPhoto, getKeyWorlds, photoDetail, getKeyPhotos };
