@@ -28,9 +28,9 @@ const routes = [
     component: () => import('../views/SearchResult.vue'),
   },
   {
-    path: '/users/bookmarked',
-    name: 'BookMarked',
-    component: () => import('../views/user/BookMarked.vue'),
+    path: '/users/Means/:uid',
+    name: 'Means',
+    component: () => import('../views/user/Means.vue'),
   },
   {
     path: '/users/followed',

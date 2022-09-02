@@ -124,7 +124,10 @@ const setModel = () => {
     console.log('setModal');
 }
 const toInformation = () => {
-    console.log('information');
+    let uid = store.userDeail.uid || 0
+    router.push({
+        path: `/users/Means/${uid}`,
+    })
 }
 
 const login = () => {

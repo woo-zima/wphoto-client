@@ -8,8 +8,9 @@
                 <div class="rightMsg">
                     <aside class="detail-author">
                         <section class="headImg-info">
-                            <el-avatar> {{  state.currentPhoto.uname  }} </el-avatar>
-                            <h2>{{  state.currentPhoto.uname  }}</h2>
+                            <el-avatar @click="toInformation" style="cursor: pointer;"> {{ state.currentPhoto.uname }}
+                            </el-avatar>
+                            <h2>{{ state.currentPhoto.uname }}</h2>
                         </section>
                         <section>
                             <el-button color="#626aef" round>关注</el-button>
@@ -28,13 +29,13 @@
 
             <div class="photo-content">
                 <div class="content-inner">
-                    <h2>{{  dialogConfig.dialogItem.pname  }}</h2>
+                    <h2>{{ dialogConfig.dialogItem.pname }}</h2>
                     <div class="intro">alalalala</div>
                     <div class="tags">
 
                     </div>
                     <ul class="star"></ul>
-                    <div class="data" title="投稿时间"> {{  dialogConfig.dialogItem.uptime.slice(0, 10)  }}</div>
+                    <div class="data" title="投稿时间"> {{ dialogConfig.dialogItem.uptime.slice(0, 10) }}</div>
 
                 </div>
             </div>
@@ -67,8 +68,8 @@
                                             <el-avatar> user </el-avatar>
                                         </a>
                                         <div>
-                                            <h2>{{  item.user.uname  }}</h2>
-                                            <div class="comment-text">{{  item.content  }}</div>
+                                            <h2>{{ item.user.uname }}</h2>
+                                            <div class="comment-text">{{ item.content }}</div>
                                         </div>
 
                                     </li>
@@ -82,7 +83,7 @@
                             <h3>发布者</h3>
                             <div style="display: flex;">
                                 <el-avatar> user </el-avatar>
-                                <h2 style="margin: 0;padding: 0 10px;">{{  state.currentPhoto.uname  }}</h2>
+                                <h2 style="margin: 0;padding: 0 10px;">{{ state.currentPhoto.uname }}</h2>
 
                             </div>
 
@@ -101,8 +102,10 @@ import { randomColorToDom } from '@/modules/my-Tool/randomColorToDom';
 import showUrl from '@/assets/img.svg';
 import likeIcon from '@/assets/like.svg'
 import { loginStore } from '../../store';
+import { useRouter } from 'vue-router';
 
 let textareaValue = ref('');
+const router = useRouter()
 const store = loginStore();
 const props = defineProps({
     dialogConfig: {
@@ -138,13 +141,18 @@ const getPhotoDetail = async (pid) => {
         state.currentPhoto = res.data.user
     }
 }
-
-
+//跳转作者详情页
+const toInformation = () => {
+    let uid = props.dialogConfig.dialogItem.upid || 0;
+    router.push({
+        path: `/users/Means/${uid}`,
+    })
+}
 
 const dialogMainVisible = computed(() => {
     return props.dialogConfig.showDialog
 })
-
+//获取更新
 watch(() => props.dialogConfig.dialogItem, (newVal, oldVal) => {
     getPhotoComment(newVal.pid);
     getPhotoDetail(newVal.pid);
@@ -155,7 +163,7 @@ watch(() => props.dialogConfig.dialogItem, (newVal, oldVal) => {
 
 }, { deep: true })
 
-
+//校验
 const vaildCommentText = () => {
     if (textareaValue.value === '' || textareaValue.value === null) {
         return false
@@ -183,7 +191,7 @@ const sbumitTextarea = () => {
     })
 
 }
-
+//发送评论
 const postComment = async () => {
     const commentData = {
         uid: store.userDeail.uid,

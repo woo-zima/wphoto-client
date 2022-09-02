@@ -183,11 +183,12 @@ const uploadPhoto = async (file, res) => {
 }
 
 const uploadError = (err, file, fileList) => {
-    ElMessage({
-        showClose: true,
-        message: 'upload error.',
-        type: 'error',
-    })
+    // ElMessage({
+    //     showClose: true,
+    //     message: 'upload error.',
+    //     type: 'error',
+    // })
+    console.log(err);
 }
 const onSubmit = (Form) => {
     console.log('submit!', uploadFile)
