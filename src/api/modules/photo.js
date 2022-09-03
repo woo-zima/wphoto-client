@@ -54,5 +54,21 @@ function photoDetail(pid) {
       pid,
     },
   });
+} //获取作者发布作品集
+function getUpPhotos(params) {
+  return axios({
+    url: '/photo/getUpPhotos',
+    method: 'get',
+    params,
+  });
 }
-export { getPhotoList, getRankByKey, addPhoto, getKeyWorlds, photoDetail, getKeyPhotos };
+
+export {
+  getPhotoList,
+  getRankByKey,
+  addPhoto,
+  getKeyWorlds,
+  photoDetail,
+  getKeyPhotos,
+  getUpPhotos,
+};

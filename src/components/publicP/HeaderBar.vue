@@ -113,8 +113,8 @@ const querySearch = async (queryString, cb) => {
 
 const handleSearch = (item) => {
     console.log(item);
-    router.push({
-        path: 'keyPhotos',
+    router.replace({
+        path: '/keyPhotos',
         query: { key: item.value }
     })
 
