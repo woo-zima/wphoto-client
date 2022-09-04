@@ -31,11 +31,18 @@ const routes = [
     path: '/users/Means/:uid',
     name: 'Means',
     component: () => import('../views/user/Means.vue'),
-  },
-  {
-    path: '/users/followed',
-    name: 'Followed',
-    component: () => import('../views/user/Followed.vue'),
+    children: [
+      {
+        path: 'fans',
+        name: 'Fans',
+        component: () => import('../views/user/Fans.vue'),
+      },
+      {
+        path: 'follow',
+        name: 'Follow',
+        component: () => import('../views/user/Follow.vue'),
+      },
+    ],
   },
   {
     path: '/users/uploadphoto',

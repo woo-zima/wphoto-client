@@ -10,9 +10,19 @@
                 </div>
                 <div class="msgMain">
                     <h2>zmrin</h2>
+                    <div class="contact">
+                        <a @click="toFollowPage">
+                            <p>关注数</p>
+                            <p></p>
+                        </a>
+                        <a @click="toFansPage">
+                            <p>粉丝数</p>
+                            <p></p>
+                        </a>
+                    </div>
                 </div>
             </div>
-
+            <router-view />
             <div class="upList">
                 <div class="listTitle">上传作品</div>
                 <ul class="listBox" v-if="state.upLists != []">
@@ -36,12 +46,15 @@ const $api = inject('$api');
 const route = useRoute();
 const router = useRouter();
 const state = reactive({
-    upLists: []
+    upLists: [],
+    followHref:`/users/Means/${+route.params.uid}/follow`,
+    fansHref:`/users/Means/${+route.params.uid}/fans`
 })
 
 onMounted(() => {
     getUpLists()
-    console.log(route.params);
+    console.log(route);
+    console.log(route.params.uid);
 })
 const getUpLists = async () => {
     const query = { upid: route.params.uid }
@@ -52,7 +65,18 @@ const getUpLists = async () => {
     }
 }
 const toBack = () => {
-    router.go(-1)
+    router.back()
+}
+const toFollowPage = () =>{
+    router.push({
+        path:`follow`
+    })
+}
+const toFansPage = () =>{
+    router.push({
+        path:`fans`
+    })
+
 }
 </script>
 

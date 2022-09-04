@@ -1,6 +1,6 @@
 <template>
     <div>
-        follow Up
+        follow
     </div>
 </template>
 
