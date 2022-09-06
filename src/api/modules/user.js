@@ -42,33 +42,35 @@ export function uploadImg(param) {
     data: param,
   });
 }
-//获取评论
-export function getcontent(id) {
+//获取用户信息
+export function getUpMsg(id) {
   return axios({
-    url: '/system/table/getcontent',
+    url: `/users/${id}`,
+    method: 'get',
+  });
+}
+
+//获取关注
+export function getFollowMsg(uid) {
+  return axios({
+    url: '/follow/getFollowRelation',
     method: 'get',
     params: {
-      pid: id,
+      uid,
     },
   });
 }
-//发表评论
-export function release(params) {
+//获取粉丝
+export function getFansMsg(uid) {
   return axios({
-    url: '/system/table/release',
-    method: 'post',
-    transformRequest: [
-      function (data) {
-        return Qs.stringify(data);
-      },
-    ],
-    headers: {
-      deviceCode: 'A95ZEF1-47B5-AC90BF3',
+    url: '/follow/getFansRelation',
+    method: 'get',
+    params: {
+      uid,
     },
-    crossDomain: true,
-    data: params,
   });
 }
+
 //获取是否收藏
 export function issc(uid, pid) {
   return axios({

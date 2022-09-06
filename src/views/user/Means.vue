@@ -1,154 +1,125 @@
 <template>
-    <div class="Means">
-        <div class="leftBack">
-            <button @click="toBack">BACK</button>
-        </div>
-        <div class="rightContainer">
-            <div class="authMsg">
-                <div class="avatarImg">
-                    <el-avatar> A</el-avatar>
-                </div>
-                <div class="msgMain">
-                    <h2>zmrin</h2>
-                    <div class="contact">
-                        <a @click="toFollowPage">
-                            <p>关注数</p>
-                            <p></p>
-                        </a>
-                        <a @click="toFansPage">
-                            <p>粉丝数</p>
-                            <p></p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <router-view />
-            <div class="upList">
-                <div class="listTitle">上传作品</div>
-                <ul class="listBox" v-if="state.upLists != []">
-                    <li class="boxItem" v-for="item in state.upLists">
-                        <img :src="'http://wphoto.top/' + item.purl" alt="">
-                    </li>
-                </ul>
-                <div v-else>
-                    暂无作品
-                </div>
-            </div>
-        </div>
+  <div class="Means">
+    <div class="leftBack">
+      <button @click="toBack">BACK</button>
     </div>
+    <div class="rightContainer">
+      <div class="authMsg">
+        <div class="avatarImg">
+          <el-avatar>{{ state.upMsg.uname }}</el-avatar>
+        </div>
+        <div class="msgMain">
+          <h2>{{ state.upMsg.uname }}</h2>
+          <div class="contact">
+            <a @click="toFollowPage">
+              <p>关注数</p>
+              <p>{{ state.followM.length }}</p>
+            </a>
+            <a @click="toFansPage">
+              <p>粉丝数</p>
+              <p>{{ state.fansM.length }}</p>
+            </a>
+          </div>
+        </div>
+      </div>
+      <router-view />
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { inject, onMounted, reactive } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { inject, onMounted, reactive } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const $api = inject('$api');
 const route = useRoute();
 const router = useRouter();
 const state = reactive({
-    upLists: [],
-    followHref:`/users/Means/${+route.params.uid}/follow`,
-    fansHref:`/users/Means/${+route.params.uid}/fans`
-})
+  upMsg: {},
+  fansM: [],
+  followM: [],
+});
 
 onMounted(() => {
-    getUpLists()
-    console.log(route);
-    console.log(route.params.uid);
-})
-const getUpLists = async () => {
-    const query = { upid: route.params.uid }
-    const res = await $api.photo.getUpPhotos(query)
-    if (res) {
-        state.upLists = res.data;
-        console.log(res);
-    }
-}
-const toBack = () => {
-    router.back()
-}
-const toFollowPage = () =>{
-    router.push({
-        path:`follow`
-    })
-}
-const toFansPage = () =>{
-    router.push({
-        path:`fans`
-    })
+  getUpMsg();
+  getFsOrFl();
+});
+const getUpMsg = async () => {
+  const res = await $api.user.getUpMsg(route.params.uid);
+  if (res) {
+    state.upMsg = res.data;
+  }
+};
 
-}
+const getFsOrFl = async () => {
+  let { uid } = route.params;
+  Promise.all([$api.user.getFansMsg(uid), $api.user.getFollowMsg(uid)])
+    .then(res => {
+      console.log(res);
+      state.fansM = res[0].data;
+      state.followM = res[1].data;
+    })
+    .catch(e => {
+      console.log(e);
+    });
+};
+
+const toBack = () => {
+  router.back();
+};
+const toFollowPage = () => {
+  router.push({
+    path: `follow`,
+  });
+};
+const toFansPage = () => {
+  router.push({
+    path: `fans`,
+  });
+};
 </script>
 
 <style scoped>
 .Means {
-    position: relative;
+  position: relative;
 }
 
 .Means .leftBack {
-    width: 300px;
+  width: 300px;
 }
 
 .Means .leftBack button {
-    border: 1px solid #abc;
-    background-color: #fff;
-    padding: 5px 15px;
-    margin-left: 15px;
-    border-radius: 10px;
-    cursor: pointer;
+  border: 1px solid #abc;
+  background-color: #fff;
+  padding: 5px 15px;
+  margin-left: 15px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
 .Means .leftBack button:hover {
-    border: 1px solid #EB5757;
+  border: 1px solid #eb5757;
 }
 
 .Means .rightContainer {
-    padding-top: 10px;
+  padding-top: 10px;
 }
 
 .rightContainer .authMsg {
-    margin-left: 150px;
-    display: flex;
-    gap: 25px;
-
+  margin-left: 150px;
+  display: flex;
+  gap: 25px;
 }
 
 .authMsg .avatarImg {
-    padding: 10px;
+  padding: 10px;
 }
 
 .avatarImg .el-avatar {
-    --el-avatar-size: 100px
+  --el-avatar-size: 100px;
 }
 
 .authMsg .msgMain {
-    flex: 4;
-}
-
-.upList .listTitle {
-    text-align: center;
-    font-size: 17px;
-    padding: 3px 0;
-}
-
-.upList .listBox {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 5px;
-    margin: 0 auto;
-    width: 1225px;
-    padding: 0;
-}
-
-.listBox .boxItem {
-    width: 300px;
-    height: 300px;
-}
-
-.listBox .boxItem img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  flex: 4;
 }
 </style>

@@ -1,0 +1,65 @@
+<template>
+    <div class="upList">
+        <div class="listTitle">上传作品</div>
+        <ul class="listBox" v-if="state.upLists != []">
+            <li class="boxItem" v-for="item in state.upLists">
+                <img :src="'http://wphoto.top/' + item.purl" alt="">
+            </li>
+        </ul>
+        <div v-else>
+            暂无作品
+        </div>
+    </div>
+</template>
+
+<script setup>
+import { inject, onMounted, reactive } from "vue";
+import { useRoute, useRouter } from "vue-router";
+
+const $api = inject('$api');
+const route = useRoute();
+const router = useRouter();
+const state = reactive({
+    upLists: [],
+})
+onMounted(() => {
+    getUpLists()
+})
+const getUpLists = async () => {
+    const query = { upid: route.params.uid }
+    const res = await $api.photo.getUpPhotos(query)
+    if (res) {
+        state.upLists = res.data;
+        console.log(res);
+    }
+}
+</script>
+
+<style scoped>
+.upList .listTitle {
+    text-align: center;
+    font-size: 17px;
+    padding: 3px 0;
+}
+
+.upList .listBox {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 0 auto;
+    width: 1225px;
+    padding: 0;
+}
+
+.listBox .boxItem {
+    width: 300px;
+    height: 300px;
+}
+
+.listBox .boxItem img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+</style>

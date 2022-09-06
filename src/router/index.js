@@ -1,11 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-// 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
-// const originalPush = VueRouter.prototype.push;
-// VueRouter.prototype.push = function push(location) {
-//   return originalPush.call(this, location).catch(err => err);
-// };
-
 const routes = [
   {
     path: '/',
@@ -31,7 +25,13 @@ const routes = [
     path: '/users/Means/:uid',
     name: 'Means',
     component: () => import('../views/user/Means.vue'),
+    // redirect: '/users/Means/:uid/upl',
     children: [
+      {
+        path: 'up',
+        name: 'Upl',
+        component: () => import('../views/user/upl.vue'),
+      },
       {
         path: 'fans',
         name: 'Fans',
@@ -40,7 +40,7 @@ const routes = [
       {
         path: 'follow',
         name: 'Follow',
-        component: () => import('../views/user/Follow.vue'),
+        component: () => import('../views/user/Fans.vue'),
       },
     ],
   },
