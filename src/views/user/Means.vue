@@ -55,12 +55,17 @@ const getFsOrFl = async () => {
   let { uid } = route.params;
   Promise.all([$api.user.getFansMsg(uid), $api.user.getFollowMsg(uid)])
     .then(res => {
-      console.log(res);
+      // console.log(res);
       state.fansM = res[0].data;
       state.followM = res[1].data;
     })
     .catch(e => {
-      console.log(e);
+      // console.log(e);
+      ElMessage({
+        showClose: true,
+        message: e,
+        type: 'error',
+      });
     });
 };
 

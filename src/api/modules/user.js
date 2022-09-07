@@ -60,6 +60,27 @@ export function getFollowMsg(uid) {
     },
   });
 }
+//取消关注
+export function cancelFollow(gzid) {
+  return axios({
+    url: '/follow/deleteFollowRelation',
+    method: 'post',
+    data: {
+      gzid,
+    },
+  });
+}
+//添加关注
+export function addFollow(uid, followuid) {
+  return axios({
+    url: '/follow/addFollowRelation',
+    method: 'post',
+    data: {
+      uid,
+      followuid,
+    },
+  });
+}
 //获取粉丝
 export function getFansMsg(uid) {
   return axios({

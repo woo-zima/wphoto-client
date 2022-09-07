@@ -18,15 +18,17 @@
                 <span>{{ item.uMsg.uname }}</span>
               </a>
               <div class="footer">
-                <div
-                  class="fs-action"
-                  @mouseover.stop="moveToDropDown"
-                  @mouseleave.stop="leaveToDropDown"
-                >
-                  <span>已关注</span>
-                  <ul class="action-dropdown-menu">
-                    <li class="action-dropdown-item">取消关注</li>
-                  </ul>
+                <div class="fs-action">
+                  <el-popover v-model:visible="item.visible" trigger="hover" :width="80">
+                    <div style="margin: 0; cursor: pointer; text-align: center">
+                      <span size="small" @click="cancelFollow(item)">取消关注</span>
+                    </div>
+                    <template #reference>
+                      <span class="followed" @click="toFollow(item)">
+                        {{ item.followed ? '已关注' : '关注' }}
+                      </span>
+                    </template>
+                  </el-popover>
                 </div>
               </div>
             </div>
@@ -43,7 +45,6 @@ import { useRoute } from 'vue-router';
 import { loginStore } from '@/store';
 
 const $api = inject('$api');
-const Fcontent = ref(null);
 const store = loginStore();
 const route = useRoute();
 const state = reactive({
@@ -51,9 +52,8 @@ const state = reactive({
 });
 onMounted(() => {
   getFsOrFl();
-  console.log(Fcontent.value);
-  console.log(Fcontent.value.querySelectorAll('.fs-action'));
 });
+
 const FansOrFoll = flag => {
   let loginUserId = store.userDeail.uid,
     currentUserId = route.params.uid;
@@ -73,30 +73,62 @@ const FansOrFoll = flag => {
 };
 
 const getFsOrFl = async () => {
-  let { uid } = route.params;
+  let { uid } = route.params,
+    res;
   if (route.name === 'Fans') {
-    const res = await $api.user.getFansMsg(uid);
-    if (res) {
-      console.log(res);
-      state.fsOrFl = res.data;
-      console.log(state.fsOrFl);
-    }
+    res = await $api.user.getFansMsg(uid);
   }
   if (route.name === 'Follow') {
-    const res = await $api.user.getFollowMsg(uid);
-    if (res) {
-      console.log(res);
-      state.fsOrFl = res.data;
-    }
+    res = await $api.user.getFollowMsg(uid);
+  }
+  if (res) {
+    state.fsOrFl = res.data;
+    state.fsOrFl.forEach(item => {
+      item.visible = false;
+      item.followed = true;
+    });
   }
 };
-//鼠标移入显示drop
-const moveToDropDown = e => {
-  console.log(e);
+//取消关注
+const cancelFollow = async item => {
+  const res = await $api.user.cancelFollow(item.gzid);
+  if (res.status === 200) {
+    item.visible = false;
+    item.followed = false;
+    ElMessage({
+      showClose: true,
+      message: '取关成功QAQ',
+      type: 'info',
+    });
+  } else {
+    ElMessage({
+      showClose: true,
+      message: '出错辽QAQ',
+      type: 'error',
+    });
+  }
 };
-//鼠标移出
-const leaveToDropDown = e => {
-  console.log(e);
+//关注
+const toFollow = async item => {
+  if (!item.followed) {
+    const res = await $api.user.addFollow(item.uid, item.followuid);
+    if (res.status === 200) {
+      item.followed = true;
+      ElMessage({
+        showClose: true,
+        message: '关注成功W_W',
+        type: 'success',
+      });
+    } else {
+      ElMessage({
+        showClose: true,
+        message: '出错辽QAQ',
+        type: 'error',
+      });
+    }
+  } else {
+    item.visible = !item.visible;
+  }
 };
 </script>
 
@@ -151,17 +183,15 @@ const leaveToDropDown = e => {
   position: absolute;
   right: 0;
   top: 0;
-}
-.footer .fs-action {
-  background-color: #e5e9ef;
-  position: relative;
-  border-radius: 4px;
-  font-size: 0;
-  color: #6d757a;
-  padding: 4px 11px 4px 9px;
-  line-height: 16px;
-  border: 0;
   cursor: pointer;
+}
+.fs-action .followed {
+  padding: 5px 7px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+}
+.fs-action .followed:hover {
+  border: 1px solid #eb5757;
 }
 .fs-action span {
   line-height: 16px;
@@ -172,29 +202,6 @@ const leaveToDropDown = e => {
 .fs-item .content a span {
   margin-left: 20px;
 }
-
-.action-dropdown-menu {
-  position: fixed;
-  top: 40px;
-  z-index: 10;
-  padding: 6px 0;
-  background-color: #fff;
-  border: 1px solid #e5e9ef;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgb(0 0 0 / 14%);
-}
-.action-dropdown-menu .action-dropdown-item {
-  height: 30px;
-  padding: 0 20px;
-  line-height: 35px;
-  text-align: center;
-  font-size: 14px;
-  color: #222;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
 @media (min-width: 1280px) {
   .fans-main {
     width: 1225px;

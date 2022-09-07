@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <el-container class="page-container" style="overflow: hidden;">
+    <el-container class="page-container" style="overflow: hidden">
       <el-header>
         <HeaderBar />
       </el-header>
@@ -8,16 +8,15 @@
         <!-- vue-page-stack  -->
         <router-view :key="route.fullPath" />
       </el-main>
-
     </el-container>
     <TopLogin />
   </div>
 </template>
 
 <script setup>
-import { useRoute } from "vue-router";
+import { useRoute } from 'vue-router';
 
-const route = useRoute()
+const route = useRoute();
 </script>
 
 <style>
@@ -34,5 +33,8 @@ li {
 
 a {
   text-decoration: none;
+}
+.el-popover.el-popper {
+  min-width: 50px;
 }
 </style>
