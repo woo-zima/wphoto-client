@@ -14,7 +14,9 @@
               <h2>{{ state.currentPhoto.uname }}</h2>
             </section>
             <section>
-              <el-button color="#626aef" round>关注</el-button>
+              <el-button color="#626aef" round @click="toFollow">
+                {{ state.followFl == null ? '关注' : '已关注' }}
+              </el-button>
             </section>
           </aside>
         </div>
@@ -28,9 +30,7 @@
           :initial-index="0"
           fit="cover"
         />
-        <div class="like">
-          <img :src="likeIcon" alt="" />
-        </div>
+        <Like :likeMsg="state.likeMsg" />
       </div>
 
       <div class="photo-content">
@@ -102,13 +102,13 @@
 import { computed, inject, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 import { randomColorToDom } from '@/modules/my-Tool/randomColorToDom';
 import showUrl from '@/assets/img.svg';
-import likeIcon from '@/assets/like.svg';
 import { loginStore } from '../../store';
 import { useRouter } from 'vue-router';
 
 let textareaValue = ref('');
 const router = useRouter();
 const store = loginStore();
+const $api = inject('$api');
 const props = defineProps({
   dialogConfig: {
     type: Object,
@@ -119,11 +119,12 @@ const state = reactive({
   currentPhoto: {},
   comment: [],
   srcList: [],
+  followFl: [],
+  likeMsg: {},
 });
 onBeforeUnmount(() => {
   textareaValue.value = '';
 });
-const $api = inject('$api');
 onMounted(() => {
   // getPhotoComment(50)
 });
@@ -158,6 +159,8 @@ watch(
   (newVal, oldVal) => {
     getPhotoComment(newVal.pid);
     getPhotoDetail(newVal.pid);
+    getFollowMsg(newVal.upid);
+    state.likeMsg = newVal;
     nextTick(() => {
       randomColorToDom('.el-dialog');
     });
@@ -165,7 +168,16 @@ watch(
   },
   { deep: true }
 );
-
+//dialogMain获取关注
+const getFollowMsg = async id => {
+  const res = await $api.user.getFollowMsg(store.userDeail.uid);
+  if (res) {
+    state.followFl = res.data.find(item => {
+      return item.followuid === props.dialogConfig.dialogItem.upid;
+    });
+    // console.log(state.followFl == null);
+  }
+};
 //校验
 const vaildCommentText = () => {
   if (textareaValue.value === '' || textareaValue.value === null) {
@@ -173,7 +185,7 @@ const vaildCommentText = () => {
   }
   return true;
 };
-
+//评论验证触发
 const sbumitTextarea = () => {
   if (!store.userDeail.uname) {
     ElMessage({
@@ -207,13 +219,33 @@ const postComment = async () => {
     ElMessage({
       showClose: true,
       message: res.data,
-      type: 'info',
+      type: 'success',
     });
   }
 };
 const closeDialogHandle = () => {
   props.dialogConfig.showDialog = false;
   textareaValue.value = '';
+};
+
+//DialogMain关注
+const toFollow = async () => {
+  let uid = store.userDeail.uid,
+    followuid = props.dialogConfig.dialogItem.upid;
+  const res = await $api.user.addFollow(uid, followuid);
+  if (res.status == 200) {
+    ElMessage({
+      showClose: true,
+      message: res.data,
+      type: 'success',
+    });
+  } else {
+    ElMessage({
+      showClose: true,
+      message: '系统出错QAQ',
+      type: 'error',
+    });
+  }
 };
 </script>
 
@@ -272,11 +304,6 @@ const closeDialogHandle = () => {
   content: '查看大图';
   width: 88px;
   height: 18px;
-}
-
-.photo-action .like img {
-  width: 30px;
-  height: 30px;
 }
 
 .photo-content {
