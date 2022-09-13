@@ -11,17 +11,7 @@ function getPhotoList(pageNum) {
     },
   });
 }
-function getRankByKey(keyword, pageNum) {
-  return axios({
-    url: '/photo/searcherphoto',
-    method: 'get',
-    params: {
-      key: keyword,
-      startIndex: pageNum,
-      pageSize: 20,
-    },
-  });
-}
+
 function addPhoto(params) {
   return axios({
     url: '/photo/addPhoto',
@@ -29,7 +19,7 @@ function addPhoto(params) {
     data: params,
   });
 }
-//模糊查询搜索
+//模糊查询搜索提示
 function getKeyWorlds(params) {
   return axios({
     url: '/photo/getKeyWorlds',
@@ -63,12 +53,4 @@ function getUpPhotos(params) {
   });
 }
 
-export {
-  getPhotoList,
-  getRankByKey,
-  addPhoto,
-  getKeyWorlds,
-  photoDetail,
-  getKeyPhotos,
-  getUpPhotos,
-};
+export { getPhotoList, addPhoto, getKeyWorlds, photoDetail, getKeyPhotos, getUpPhotos };

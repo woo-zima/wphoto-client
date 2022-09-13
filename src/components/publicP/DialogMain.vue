@@ -170,6 +170,7 @@ watch(
 );
 //dialogMain获取关注
 const getFollowMsg = async id => {
+  if (!store.userDeail.uid) return;
   const res = await $api.user.getFollowMsg(store.userDeail.uid);
   if (res) {
     state.followFl = res.data.find(item => {
@@ -230,6 +231,14 @@ const closeDialogHandle = () => {
 
 //DialogMain关注
 const toFollow = async () => {
+  if (!store.userDeail.uid) {
+    ElMessage({
+      showClose: true,
+      message: '你未登录!',
+      type: 'error',
+    });
+    return;
+  }
   let uid = store.userDeail.uid,
     followuid = props.dialogConfig.dialogItem.upid;
   const res = await $api.user.addFollow(uid, followuid);

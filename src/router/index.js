@@ -12,9 +12,12 @@ const routes = [
     component: () => import('../views/RankingList.vue'),
   },
   {
-    path: '/browsing',
-    name: 'browsing',
-    component: () => import('../views/BrowsingList.vue'),
+    path: '/liked',
+    name: 'liked',
+    meta: {
+      Auth: true,
+    },
+    component: () => import('../views/Liked.vue'),
   },
   {
     path: '/keyPhotos',
@@ -24,22 +27,34 @@ const routes = [
   {
     path: '/users/Means/:uid',
     name: 'Means',
+    meta: {
+      Auth: true,
+    },
     component: () => import('../views/user/Means.vue'),
     // redirect: '/users/Means/:uid/upl',
     children: [
       {
         path: 'up',
         name: 'Upl',
+        meta: {
+          Auth: true,
+        },
         component: () => import('../views/user/upl.vue'),
       },
       {
         path: 'fans',
         name: 'Fans',
+        meta: {
+          Auth: true,
+        },
         component: () => import('../views/user/Fans.vue'),
       },
       {
         path: 'follow',
         name: 'Follow',
+        meta: {
+          Auth: true,
+        },
         component: () => import('../views/user/Fans.vue'),
       },
     ],
@@ -47,6 +62,9 @@ const routes = [
   {
     path: '/users/uploadphoto',
     name: 'UploadPhoto',
+    meta: {
+      Auth: true,
+    },
     component: () => import('../views/user/UploadPhoto.vue'),
   },
   // {
@@ -59,6 +77,26 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+router.beforeEach(async (to, from, next) => {
+  let token = localStorage.getItem('userInfo');
+  if (to.meta.Auth) {
+    if (token) {
+      next();
+    } else {
+      next({
+        path: '/',
+      });
+      ElMessage({
+        showClose: true,
+        message: '你未登录!',
+        type: 'error',
+      });
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
