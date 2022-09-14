@@ -15,7 +15,7 @@
             </section>
             <section>
               <el-button color="#626aef" round @click="toFollow">
-                {{ state.followFl == null ? '关注' : '已关注' }}
+                {{ state.followFl == '' ? '关注' : '已关注' }}
               </el-button>
             </section>
           </aside>

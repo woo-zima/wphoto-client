@@ -1,12 +1,13 @@
 import axios from '../base.js';
 //获取喜欢页数据
-function getLikesByUid(uid, pid) {
+function getLikesByUid(uid, pageNum) {
   return axios({
     url: '/like/getLikesByUid',
     method: 'get',
     params: {
       uid,
-      pid,
+      pageNum,
+      pageSize: 16,
     },
   });
 }
@@ -32,6 +33,7 @@ function addLike(uid, pid) {
     },
   });
 }
+//取消like
 function cancelLike(likeid) {
   return axios({
     url: '/like/cancelLike',

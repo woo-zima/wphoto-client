@@ -1,5 +1,5 @@
 <template>
-  <div class="liked">
+  <div class="liked" v-if="state.picList != ''">
     <WaterFall
       :picList="state.picList"
       :column="state.column"
@@ -7,6 +7,9 @@
       class="photoVirualList"
       ref="photoVirual"
     ></WaterFall>
+  </div>
+  <div v-else class="nullLike">
+    <span class="nullLikeTitle">{{ state.nullLike }}</span>
   </div>
 </template>
 
@@ -20,16 +23,17 @@ const $api = inject('$api');
 const state = reactive({
   picList: [],
   column: 4,
+  nullLike: '暂无收藏QAQ',
 });
 
 onMounted(() => {
-  nextPage();
+  nextPage(1);
 });
-const nextPage = async () => {
+const nextPage = async pageNum => {
   let uid = store.userDeail.uid;
-  const data = await $api.like.getLikesByUid(uid);
-  if (data) {
-    let photoMsg = data.data.map(item => {
+  const res = await $api.like.getLikesByUid(uid, pageNum);
+  if (res) {
+    let photoMsg = res.data.map(item => {
       return item.photoMsg;
     });
     state.picList.push(...photoMsg);
@@ -51,5 +55,8 @@ const nextPage = async () => {
   width: 1200px;
   margin: 0 auto;
   overflow-y: scroll;
+}
+.nullLike {
+  text-align: center;
 }
 </style>

@@ -36,6 +36,7 @@
 <script setup>
 import { onMounted, reactive, ref, watch, inject, computed } from 'vue';
 import { loginStore } from '@/store';
+import { ElMessage } from 'element-plus';
 
 const props = defineProps({
   likeMsg: {
@@ -64,13 +65,20 @@ watch(
   () => props.likeMsg,
   newVal => {
     console.log(newVal);
-    state.liked = false;
     getPhotoLinkLike();
   },
   { deep: true }
 );
 //渲染Red
 const changeLike = () => {
+  if (!state.uid) {
+    ElMessage({
+      showClose: true,
+      message: '你未登录QAQ',
+      type: 'info',
+    });
+    return;
+  }
   console.log(state.liked);
   if (state.liked) {
     cancelLike();
@@ -84,7 +92,7 @@ const changeLike = () => {
 const addLike = async () => {
   const res = await $api.like.addLike(state.uid, props.likeMsg.pid);
   if (res.status === 200) {
-    state.liked = false;
+    getPhotoLinkLike();
   }
 };
 //取消like
@@ -92,7 +100,7 @@ const cancelLike = async () => {
   console.log(state.currentLikeData.likeid);
   const res = await $api.like.cancelLike(state.currentLikeData.likeid);
   if (res.status === 200) {
-    state.liked = true;
+    getPhotoLinkLike();
   }
 };
 //获取是否like
@@ -104,6 +112,8 @@ const getPhotoLinkLike = async () => {
     state.currentLikeData = res.data;
     console.log(state.currentLikeData);
     state.liked = true;
+  } else {
+    state.liked = false;
   }
 
   // likedRender();

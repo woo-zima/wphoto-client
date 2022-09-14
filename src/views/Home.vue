@@ -32,7 +32,6 @@ const nextPage = async pageNum => {
     // console.log(state.picList);
   }
 };
-const cli = () => {};
 const resetWindow = e => {
   let elem = document.querySelector('.photoVirualList');
   let rect = elem.getBoundingClientRect();
