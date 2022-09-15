@@ -18,10 +18,7 @@
 
 <script setup>
 import { onMounted, nextTick, reactive, watch, ref, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 
-const Router = useRouter();
-const Route = useRoute();
 const props = defineProps({
   picList: {
     type: Array,
@@ -53,13 +50,11 @@ const state = reactive({
 });
 const photoVirual = ref();
 
-// nextTick(() => {
-//     rederPhotoList(picLists.value, 0);
-// })
 onMounted(() => {
-  // setTimeout(() => {
-  //     rederPhotoList(picLists.value, 0);
-  // }, 100);
+  // nextTick(() => {
+  //   rederPhotoList(props.picList, state.pageNum);
+  //   state.scrollY++;
+  // });
 });
 const picLists = computed(() => {
   return props.picList;
@@ -71,12 +66,8 @@ const showScrollY = computed(() => {
 watch(
   () => props,
   (newVal, oldVal) => {
-    // setTimeout(() => {
-    // rederPhotoList(newVal.picList, state.pageNum);
-    // state.scrollY++;
-    // }, 100);
     nextTick(() => {
-      // console.log(newVal);
+      console.log(newVal);
       rederPhotoList(newVal.picList, state.pageNum);
       state.scrollY++;
     });
@@ -87,6 +78,7 @@ watch(
 const rederPhotoList = (data, pageNum) => {
   state.pageNum += 16;
   let oItems = document.getElementsByClassName('picBox');
+  console.log(pageNum);
   data.forEach((elem, idx) => {
     if (!oItems[idx + pageNum]) return;
     let minIdx = -1;
@@ -117,12 +109,6 @@ const getMin = arr => {
 const goDetail = item => {
   state.dialogConfig.showDialog = true;
   state.dialogConfig.dialogItem = item;
-  // Router.push({
-  //     path: 'photoDetail',
-  //     query: {
-  //         id: pid
-  //     }
-  // })
 };
 const orderCount = arr => {
   let resArr = [];

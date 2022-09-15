@@ -1,5 +1,5 @@
 <template>
-  <div class="liked" v-if="state.picList != ''">
+  <div class="liked">
     <WaterFall
       :picList="state.picList"
       :column="state.column"
@@ -8,7 +8,7 @@
       ref="photoVirual"
     ></WaterFall>
   </div>
-  <div v-else class="nullLike">
+  <div v-if="state.picList == ''" class="nullLike">
     <span class="nullLikeTitle">{{ state.nullLike }}</span>
   </div>
 </template>
