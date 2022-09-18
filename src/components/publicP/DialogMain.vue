@@ -3,7 +3,13 @@
     <el-dialog :modelValue="dialogMainVisible" title="PHOTO" @close="closeDialogHandle">
       <div class="photoDetail">
         <div class="leftImg">
-          <img :src="'http://wphoto.top/' + dialogConfig.dialogItem.purl" style="width: 100%" />
+          <img
+            :src="
+              dialogConfig.dialogItem.previewSrc ||
+              'http://wphoto.top/' + dialogConfig.dialogItem.purl
+            "
+            style="width: 100%"
+          />
         </div>
         <div class="rightMsg">
           <aside class="detail-author">
@@ -39,11 +45,13 @@
           <div class="intro">alalalala</div>
           <div class="tags"></div>
           <ul class="star"></ul>
-          <div class="data" title="投稿时间">{{ dialogConfig.dialogItem.uptime.slice(0, 10) }}</div>
+          <div class="data" title="投稿时间" v-if="dialogConfig.dialogItem.uptime">
+            {{ dialogConfig.dialogItem.uptime.slice(0, 10) }}
+          </div>
         </div>
       </div>
 
-      <div class="comment">
+      <div class="comment" v-if="props.dialogConfig.preview">
         <div class="comment-inner">
           <div class="au-comment">
             <div class="comments-box">
@@ -144,6 +152,7 @@ const getPhotoDetail = async pid => {
 };
 //跳转作者详情页
 const toInformation = () => {
+  if (props.dialogConfig.dialogItem.uptime == '') return;
   let uid = props.dialogConfig.dialogItem.upid || 0;
   router.push({
     path: `/users/Means/${uid}/up`,
@@ -157,14 +166,17 @@ const dialogMainVisible = computed(() => {
 watch(
   () => props.dialogConfig.dialogItem,
   (newVal, oldVal) => {
-    getPhotoComment(newVal.pid);
-    getPhotoDetail(newVal.pid);
-    getFollowMsg(newVal.upid);
+    console.log(newVal);
     state.likeMsg = newVal;
     nextTick(() => {
       randomColorToDom('.el-dialog');
     });
     state.srcList = ['http://wphoto.top/' + newVal.purl];
+    if (newVal.uptime != '') {
+      getPhotoComment(newVal.pid);
+      getPhotoDetail(newVal.pid);
+      getFollowMsg(newVal.upid);
+    }
   },
   { deep: true }
 );
@@ -239,6 +251,8 @@ const toFollow = async () => {
     });
     return;
   }
+  if (props.dialogConfig.dialogItem.uptime == '') return;
+
   let uid = store.userDeail.uid,
     followuid = props.dialogConfig.dialogItem.upid;
   const res = await $api.user.addFollow(uid, followuid);

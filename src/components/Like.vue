@@ -79,6 +79,8 @@ const changeLike = () => {
     });
     return;
   }
+  //预览页点赞
+  if (props.likeMsg.uptime == '') return;
   console.log(state.liked);
   if (state.liked) {
     cancelLike();

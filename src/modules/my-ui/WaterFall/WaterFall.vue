@@ -46,6 +46,7 @@ const state = reactive({
   dialogConfig: {
     showDialog: false,
     dialogItem: {},
+    preview: true,
   },
 });
 const photoVirual = ref();
