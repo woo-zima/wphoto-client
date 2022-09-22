@@ -21,7 +21,7 @@
             </section>
             <section>
               <el-button color="#626aef" round @click="toFollow">
-                {{ state.followFl == '' ? '关注' : '已关注' }}
+                {{ !state.followFl ? '关注' : '已关注' }}
               </el-button>
             </section>
           </aside>
@@ -112,6 +112,7 @@ import { randomColorToDom } from '@/modules/my-Tool/randomColorToDom';
 import showUrl from '@/assets/img.svg';
 import { loginStore } from '../../store';
 import { useRouter } from 'vue-router';
+import useFollow from '@/modules/my-Tool/useFollow';
 
 let textareaValue = ref('');
 const router = useRouter();
@@ -186,9 +187,9 @@ const getFollowMsg = async id => {
   const res = await $api.user.getFollowMsg(store.userDeail.uid);
   if (res) {
     state.followFl = res.data.find(item => {
-      return item.followuid === props.dialogConfig.dialogItem.upid;
+      return item.followuid === id;
     });
-    // console.log(state.followFl == null);
+    console.log(state.followFl == null);
   }
 };
 //校验
@@ -240,8 +241,7 @@ const closeDialogHandle = () => {
   props.dialogConfig.showDialog = false;
   textareaValue.value = '';
 };
-
-//DialogMain关注
+//DialogMain关注or取关
 const toFollow = async () => {
   if (!store.userDeail.uid) {
     ElMessage({
@@ -252,23 +252,15 @@ const toFollow = async () => {
     return;
   }
   if (props.dialogConfig.dialogItem.uptime == '') return;
-
   let uid = store.userDeail.uid,
     followuid = props.dialogConfig.dialogItem.upid;
-  const res = await $api.user.addFollow(uid, followuid);
-  if (res.status == 200) {
-    ElMessage({
-      showClose: true,
-      message: res.data,
-      type: 'success',
-    });
+  const { linkFollow, cancelFollow } = useFollow(uid, followuid);
+  if (!state.followFl) {
+    await linkFollow();
   } else {
-    ElMessage({
-      showClose: true,
-      message: '系统出错QAQ',
-      type: 'error',
-    });
+    await cancelFollow();
   }
+  getFollowMsg(followuid);
 };
 </script>
 

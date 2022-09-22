@@ -79,7 +79,6 @@ watch(
 const rederPhotoList = (data, pageNum) => {
   state.pageNum += 16;
   let oItems = document.getElementsByClassName('picBox');
-  console.log(pageNum);
   data.forEach((elem, idx) => {
     if (!oItems[idx + pageNum]) return;
     let minIdx = -1;

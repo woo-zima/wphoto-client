@@ -70,6 +70,16 @@ export function cancelFollow(gzid) {
     },
   });
 }
+export function cancelFollowByIds(followId, followedId) {
+  return axios({
+    url: '/follow/deleteFollowRelationByIds',
+    method: 'post',
+    data: {
+      followId,
+      followedId,
+    },
+  });
+}
 //添加关注
 export function addFollow(uid, followuid) {
   return axios({

@@ -1,7 +1,7 @@
 <template>
   <div class="Means">
     <div class="leftBack">
-      <button @click="toBack">BACK</button>
+      <button @click="toPath('up')">BACK</button>
     </div>
     <div class="rightContainer">
       <div class="authMsg">
@@ -11,11 +11,11 @@
         <div class="msgMain">
           <h2>{{ state.upMsg.uname }}</h2>
           <div class="contact">
-            <a @click="toFollowPage">
+            <a @click="toPath('follow')">
               <p>关注数</p>
               <p>{{ state.followM.length }}</p>
             </a>
-            <a @click="toFansPage">
+            <a @click="toPath('fans')">
               <p>粉丝数</p>
               <p>{{ state.fansM.length }}</p>
             </a>
@@ -69,17 +69,9 @@ const getFsOrFl = async () => {
     });
 };
 
-const toBack = () => {
-  router.back();
-};
-const toFollowPage = () => {
+const toPath = path => {
   router.push({
-    path: `follow`,
-  });
-};
-const toFansPage = () => {
-  router.push({
-    path: `fans`,
+    path: `${path}`,
   });
 };
 </script>
