@@ -34,7 +34,7 @@ const emit = defineEmits(['nextPage']);
 const state = reactive({
   scrollY: 1,
   columnHeight: [],
-  column: props.column,
+  column: 4,
   gap: 10,
   itemWidth: 288,
   pageNum: 0,
@@ -69,6 +69,7 @@ watch(
   (newVal, oldVal) => {
     nextTick(() => {
       console.log(newVal);
+      state.column = newVal.column;
       rederPhotoList(newVal.picList, state.pageNum);
       state.scrollY++;
     });
@@ -82,7 +83,7 @@ const rederPhotoList = (data, pageNum) => {
   data.forEach((elem, idx) => {
     if (!oItems[idx + pageNum]) return;
     let minIdx = -1;
-    let itemleft = (idx + 1) % props.column === 1 ? '0' : idx * (state.itemWidth + state.gap);
+    let itemleft = (idx + 1) % state.column === 1 ? '0' : idx * (state.itemWidth + state.gap);
     oItems[idx + pageNum].style.width = state.itemWidth + 'px';
     oItems[idx + pageNum].style.height =
       Math.round((elem.pheight * state.itemWidth) / elem.pwidth) + 'px';
@@ -161,7 +162,16 @@ function throttle(func, ms = 500) {
   overflow-y: scroll;
   overflow-x: auto;
 }
-
+@media screen and (max-width: 1250px) {
+  .photoVirualList {
+    width: 900px;
+  }
+}
+@media screen and (max-width: 950px) {
+  .photoVirualList {
+    width: 500px;
+  }
+}
 .virtual-collection {
   position: relative;
   margin: 10px auto;

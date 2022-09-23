@@ -1,5 +1,5 @@
 <template>
-  <div class="liked">
+  <div class="Liked">
     <WaterFall
       :picList="state.picList"
       :column="state.column"
@@ -42,20 +42,6 @@ const nextPage = async pageNum => {
 </script>
 
 <style scoped>
-.liked {
-  height: calc(100vh - 120px);
-  /* overflow-y: scroll; */
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.photoVirualList {
-  position: relative;
-  width: 1200px;
-  margin: 0 auto;
-  overflow-y: scroll;
-}
 .nullLike {
   text-align: center;
 }

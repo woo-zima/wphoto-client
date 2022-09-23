@@ -34,6 +34,9 @@ const getUpLists = async () => {
 </script>
 
 <style scoped>
+.upList {
+  width: 100%;
+}
 .upList .listTitle {
   text-align: center;
   font-size: 17px;
@@ -46,9 +49,10 @@ const getUpLists = async () => {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 5px;
   margin: 0 auto;
-  width: 1225px;
+  width: 100%;
   padding: 0;
 }
 
@@ -56,7 +60,6 @@ const getUpLists = async () => {
   width: 300px;
   height: 300px;
 }
-
 .listBox .boxItem img {
   width: 100%;
   height: 100%;

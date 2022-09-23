@@ -1,7 +1,7 @@
 <template>
   <div class="Means">
     <div class="leftBack">
-      <button @click="toPath('up')">BACK</button>
+      <button @click="toPath('up')" :class="route.name == 'Upl' ? 'hide' : ''">BACK</button>
     </div>
     <div class="rightContainer">
       <div class="authMsg">
@@ -43,6 +43,7 @@ const state = reactive({
 onMounted(() => {
   getUpMsg();
   getFsOrFl();
+  console.log(route.name);
 });
 const getUpMsg = async () => {
   const res = await $api.user.getUpMsg(route.params.uid);
@@ -80,11 +81,12 @@ const toPath = path => {
 .Means {
   position: relative;
 }
-
 .Means .leftBack {
-  width: 300px;
+  position: absolute;
 }
-
+.leftBack .hide {
+  display: none;
+}
 .Means .leftBack button {
   border: 1px solid #abc;
   background-color: #fff;
@@ -93,29 +95,23 @@ const toPath = path => {
   border-radius: 10px;
   cursor: pointer;
 }
-
 .Means .leftBack button:hover {
   border: 1px solid #eb5757;
 }
-
 .Means .rightContainer {
   padding-top: 10px;
 }
-
 .rightContainer .authMsg {
-  margin-left: 150px;
+  margin-left: 3.3333vw;
   display: flex;
   gap: 25px;
 }
-
 .authMsg .avatarImg {
   padding: 10px;
 }
-
 .avatarImg .el-avatar {
   --el-avatar-size: 100px;
 }
-
 .authMsg .msgMain {
   flex: 4;
 }

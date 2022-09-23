@@ -30,7 +30,10 @@ const route = useRoute();
   -moz-osx-font-smoothing: grayscale;
   /* color: #2c3e50; */
 }
-
+body {
+  margin: 0;
+  padding: 0;
+}
 li {
   list-style: none;
 }
@@ -40,5 +43,20 @@ a {
 }
 .el-popover.el-popper {
   min-width: 50px;
+}
+.Rank,
+.Home,
+.Liked {
+  height: calc(100vh - 120px);
+  /* overflow-y: scroll; */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.photoVirualList {
+  position: relative;
+  width: 1200px;
+  margin: 0 auto;
+  overflow-y: scroll;
 }
 </style>

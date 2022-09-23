@@ -40,7 +40,7 @@
 </template>
 
 <script setup>
-import { computed, ref, inject, onMounted, reactive } from 'vue';
+import { computed, ref, inject, onMounted, reactive, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { loginStore } from '@/store';
 
@@ -53,7 +53,12 @@ const state = reactive({
 onMounted(() => {
   getFsOrFl();
 });
-
+watch(
+  () => route.name,
+  () => {
+    getFsOrFl();
+  }
+);
 const FansOrFoll = flag => {
   let loginUserId = store.userDeail.uid,
     currentUserId = route.params.uid;
@@ -134,7 +139,7 @@ const toFollow = async item => {
 
 <style scoped>
 .fans-main {
-  width: 850px;
+  width: 100%;
   margin: 0 auto;
   min-height: 500px;
 }

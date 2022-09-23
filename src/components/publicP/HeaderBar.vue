@@ -1,10 +1,10 @@
 <template>
   <div class="HeaderBar">
     <el-row justify="space-around" style="width: 100%">
-      <el-col :lg="10" :sm="10" :xs="11">
+      <el-col :lg="10" :sm="10" :xs="10">
         <LeftList />
       </el-col>
-      <el-col class="header-info" :lg="10" :sm="10" :xs="11">
+      <el-col class="header-info" :lg="10" :sm="10" :xs="8">
         <el-autocomplete
           v-model="state.params.key"
           :debounce="300"
@@ -16,7 +16,7 @@
         ></el-autocomplete>
       </el-col>
 
-      <el-col class="header-info" :lg="4" :sm="4" :xs="2">
+      <el-col class="header-info" :lg="4" :sm="4" :xs="4">
         <div>
           <div v-if="store.showUser">
             <el-dropdown @command="clickMenu">
@@ -152,6 +152,9 @@ const logOut = () => {
   console.log(store.showUser);
   localStorage.clear();
   store.setUserInfo({});
+  router.push({
+    path: `/`,
+  });
 };
 </script>
 
