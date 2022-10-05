@@ -17,19 +17,26 @@
 </template>
 
 <script setup>
-import { onMounted, nextTick, reactive, watch, ref, computed } from 'vue';
+import {
+  onMounted,
+  onUnmounted,
+  nextTick,
+  reactive,
+  watch,
+  ref,
+  computed,
+  useAttrs,
+  onBeforeMount,
+} from 'vue';
 
 const props = defineProps({
   picList: {
     type: Array,
     default: () => [],
   },
-  column: {
-    type: Number,
-    default: () => 4,
-  },
 });
-const emit = defineEmits(['nextPage']);
+const emit = defineEmits(['nextPage', 'resetWindow']);
+const attrs = useAttrs();
 
 const state = reactive({
   scrollY: 1,
@@ -50,26 +57,32 @@ const state = reactive({
   },
 });
 const photoVirual = ref();
-
+onBeforeMount(() => {
+  window.addEventListener('resize', throttle(resetWindow), false);
+});
 onMounted(() => {
   // nextTick(() => {
   //   rederPhotoList(props.picList, state.pageNum);
   //   state.scrollY++;
   // });
+  resetWindow;
+});
+onUnmounted(() => {
+  window.removeEventListener('resize', resetWindow, false);
 });
 const picLists = computed(() => {
   return props.picList;
 });
-const showScrollY = computed(() => {
-  let { scrollTop } = photoVirual.value;
-  return state.scrollY;
+const currentColumn = computed(() => {
+  return Number(attrs.column);
 });
+const resetWindowHandel = () => {
+  emit('resetWindow', photoVirual.value);
+};
 watch(
   () => props,
   (newVal, oldVal) => {
     nextTick(() => {
-      console.log(newVal);
-      state.column = newVal.column;
       rederPhotoList(newVal.picList, state.pageNum);
       state.scrollY++;
     });
@@ -84,9 +97,11 @@ const rederPhotoList = (data, pageNum) => {
     if (!oItems[idx + pageNum]) return;
     let minIdx = -1;
     let itemleft = (idx + 1) % state.column === 1 ? '0' : idx * (state.itemWidth + state.gap);
+
     oItems[idx + pageNum].style.width = state.itemWidth + 'px';
     oItems[idx + pageNum].style.height =
       Math.round((elem.pheight * state.itemWidth) / elem.pwidth) + 'px';
+
     if ((idx + 1) % 4 === 0) {
       state.minHeightArr.push(oItems[idx].offsetHeight);
       // console.log(state.minHeightArr);
@@ -104,6 +119,7 @@ const rederPhotoList = (data, pageNum) => {
     }
   });
 };
+
 const getMin = arr => {
   return [].indexOf.call(arr, Math.min.apply(null, arr));
 };
@@ -139,7 +155,14 @@ const scrollHandle = () => {
   // }
 };
 
-function throttle(func, ms = 500) {
+const resetWindow = () => {
+  let e = photoVirual.value;
+  let rect = e.getBoundingClientRect();
+  let first1200 = true;
+  let first900 = true;
+  let first500 = true;
+};
+function throttle(func, ms = 1000) {
   let canRun = true;
   return function () {
     if (!canRun) return;
@@ -148,6 +171,15 @@ function throttle(func, ms = 500) {
       func.apply(this, arguments);
       canRun = true;
     }, ms);
+  };
+}
+function debounce(cb, delay = 500) {
+  let timer = null;
+  return function () {
+    timer && clearTimeout(timer);
+    timer = setTimeout(() => {
+      cb.apply(this, arguments);
+    }, delay);
   };
 }
 </script>

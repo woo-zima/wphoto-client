@@ -112,7 +112,6 @@ const getPhotoLinkLike = async () => {
   const res = await $api.like.getLikeByid(state.uid, pid);
   if (res.status === 200) {
     state.currentLikeData = res.data;
-    console.log(state.currentLikeData);
     state.liked = true;
   } else {
     state.liked = false;

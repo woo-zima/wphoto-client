@@ -136,6 +136,7 @@ const toInformation = () => {
   let uid = store.userDeail.uid || 0;
   router.push({
     path: `/users/Means/${uid}/up`,
+    query: new Date(),
   });
 };
 

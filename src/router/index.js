@@ -31,7 +31,6 @@ const routes = [
       Auth: true,
     },
     component: () => import('../views/user/Means.vue'),
-    // redirect: '/users/Means/:uid/upl',
     children: [
       {
         path: 'up',

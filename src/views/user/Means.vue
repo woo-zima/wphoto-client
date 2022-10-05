@@ -22,13 +22,13 @@
           </div>
         </div>
       </div>
-      <router-view />
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script setup>
-import { inject, onMounted, reactive } from 'vue';
+import { inject, onMounted, reactive, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const $api = inject('$api');
@@ -43,7 +43,6 @@ const state = reactive({
 onMounted(() => {
   getUpMsg();
   getFsOrFl();
-  console.log(route.name);
 });
 const getUpMsg = async () => {
   const res = await $api.user.getUpMsg(route.params.uid);
@@ -51,6 +50,15 @@ const getUpMsg = async () => {
     state.upMsg = res.data;
   }
 };
+watch(
+  () => route.params,
+  newVal => {
+    console.log(newVal);
+    if (newVal) return;
+    getUpMsg();
+    getFsOrFl();
+  }
+);
 
 const getFsOrFl = async () => {
   let { uid } = route.params;
@@ -107,12 +115,26 @@ const toPath = path => {
   gap: 25px;
 }
 .authMsg .avatarImg {
-  padding: 10px;
+  padding: 30px;
 }
 .avatarImg .el-avatar {
   --el-avatar-size: 100px;
 }
 .authMsg .msgMain {
   flex: 4;
+}
+.contact {
+  display: flex;
+  gap: 12px;
+}
+.contact a {
+  width: 50px;
+  cursor: pointer;
+}
+.contact a:hover {
+  color: #eb5757;
+}
+.contact a p {
+  text-align: center;
 }
 </style>

@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import { inject, onMounted, reactive } from 'vue';
+import { inject, onMounted, reactive, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 const $api = inject('$api');
@@ -23,12 +23,18 @@ const state = reactive({
 onMounted(() => {
   getUpLists();
 });
+
+watch(
+  () => route.params,
+  () => {
+    getUpLists();
+  }
+);
 const getUpLists = async () => {
   const query = { upid: route.params.uid };
   const res = await $api.photo.getUpPhotos(query);
   if (res) {
     state.upLists = res.data;
-    console.log(res);
   }
 };
 </script>

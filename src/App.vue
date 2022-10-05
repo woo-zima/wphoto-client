@@ -6,11 +6,7 @@
       </el-header>
       <el-main class="window-view">
         <!-- vue-page-stack  -->
-        <router-view v-slot="{ Component }">
-          <keep-alive>
-            <component :is="Component" />
-          </keep-alive>
-        </router-view>
+        <router-view></router-view>
       </el-main>
     </el-container>
     <TopLogin />

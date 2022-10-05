@@ -57,7 +57,7 @@
             <div class="comments-box">
               <!-- 输入框 -->
               <div class="post-comment-container">
-                <a href="" class="post-comment-avatar">
+                <a class="post-comment-avatar">
                   <el-avatar>user</el-avatar>
                 </a>
                 <div class="post-comment">
@@ -79,8 +79,13 @@
               <div class="comment-list">
                 <ul>
                   <li class="comment-item" v-for="(item, index) in state.comment" :key="index">
-                    <a href="">
-                      <el-avatar>user</el-avatar>
+                    <a>
+                      <el-avatar
+                        @click="toContentInformation(item.user.uid)"
+                        style="cursor: pointer"
+                      >
+                        {{ item.user.uname }}
+                      </el-avatar>
                     </a>
                     <div>
                       <h2>{{ item.user.uname }}</h2>
@@ -95,8 +100,10 @@
             <div class="author">
               <h3>发布者</h3>
               <div style="display: flex">
-                <el-avatar>user</el-avatar>
-                <h2 style="margin: 0; padding: 0 10px">{{ state.currentPhoto.uname }}</h2>
+                <el-avatar @click="toInformation" style="cursor: pointer">
+                  {{ state.currentPhoto.uname }}
+                </el-avatar>
+                <h2>{{ state.currentPhoto.uname }}</h2>
               </div>
             </div>
           </div>
@@ -159,6 +166,14 @@ const toInformation = () => {
     path: `/users/Means/${uid}/up`,
   });
 };
+//跳转作者详情页
+const toContentInformation = id => {
+  if (props.dialogConfig.dialogItem.uptime == '') return;
+  console.log(id);
+  router.push({
+    path: `/users/Means/${id}/up`,
+  });
+};
 
 const dialogMainVisible = computed(() => {
   return props.dialogConfig.showDialog;
@@ -167,7 +182,6 @@ const dialogMainVisible = computed(() => {
 watch(
   () => props.dialogConfig.dialogItem,
   (newVal, oldVal) => {
-    console.log(newVal);
     state.likeMsg = newVal;
     nextTick(() => {
       randomColorToDom('.el-dialog');
@@ -189,7 +203,6 @@ const getFollowMsg = async id => {
     state.followFl = res.data.find(item => {
       return item.followuid === id;
     });
-    console.log(state.followFl == null);
   }
 };
 //校验
@@ -278,7 +291,7 @@ const toFollow = async () => {
 .photoDetail {
   display: flex;
   padding-bottom: 7px;
-  height: 500px;
+  max-height: 500px;
 }
 
 .leftImg {
@@ -293,6 +306,7 @@ const toFollow = async () => {
 
 .rightMsg {
   flex: 1;
+  padding-right: 12px;
 }
 
 .photo-action {
@@ -345,6 +359,39 @@ const toFollow = async () => {
   padding: 48px 80px;
   /* text-align: center; */
   width: 100%;
+}
+@media screen and (max-width: 875px) {
+  .dialogMain .comment {
+    padding: 24px 40px;
+  }
+  .photo-content {
+    padding: 8px 5px;
+  }
+  .comment-list ul {
+    margin: 0;
+    padding: 0;
+  }
+}
+@media screen and (max-width: 700px) {
+  .dialogMain .comment {
+    padding: 6px 12px;
+  }
+  .au-comment {
+    padding: 2px 1px;
+  }
+  .post-comment-container {
+    flex-direction: column;
+  }
+  .post-comment-container form textarea {
+    height: 66px;
+  }
+  .author div {
+    flex-direction: column;
+  }
+  .author div h2 {
+    margin: 2px 0;
+    padding: 10px 5px;
+  }
 }
 
 .comment .comment-inner {
@@ -410,5 +457,9 @@ const toFollow = async () => {
   border: 1px solid #eee;
   border-radius: 2px;
   padding: 0 20px 20px 20px;
+}
+.author div h2 {
+  margin: 0;
+  padding: 0 10px;
 }
 </style>
