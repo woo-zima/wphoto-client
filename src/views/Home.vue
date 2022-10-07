@@ -4,8 +4,8 @@
       :picList="state.picList"
       @nextPage="nextPage"
       class="photoVirualList"
-      column="4"
-      @resetWindow="resetWindow"
+      :column="resetWindow()"
+      @resetColumn="resetColumn"
     ></WaterFall>
   </div>
 </template>
@@ -15,6 +15,7 @@ import { inject, nextTick, watch, onMounted, reactive, ref } from 'vue';
 
 const state = reactive({
   picList: [],
+  column: 0,
 });
 const photoVirual = ref();
 const $api = inject('$api');
@@ -32,17 +33,20 @@ const nextPage = async pageNum => {
     // console.log(state.picList);
   }
 };
-const resetWindow = e => {
-  console.log(e);
-  let rect = e.getBoundingClientRect();
-  // photoVirual.style
-  console.log(rect.width);
-  if (rect.width >= 1200) {
+const resetColumn = number => {
+  resetWindow();
+};
+const resetWindow = () => {
+  let { clientWidth } = document.scrollingElement;
+  if (clientWidth >= 1200) {
     state.column = 4;
-  } else if (rect.width >= 900) {
+    return state.column;
+  } else if (clientWidth >= 890) {
     state.column = 3;
+    return state.column;
   } else {
     state.column = 2;
+    return state.column;
   }
 };
 </script>

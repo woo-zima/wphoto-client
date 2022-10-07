@@ -112,7 +112,7 @@ onMounted(() => {
 async function getToken() {
   const { data } = await $api.user.getQiNiuToken();
   if (data) {
-    console.log(data);
+    // console.log(data);
     state.uploadData.token = data.data.uploadToken;
   }
 }
@@ -262,13 +262,22 @@ const resetForm = formEl => {
   formEl.resetFields();
 };
 const showPreview = () => {
-  if (state.previewSrc === '') return;
+  if (state.previewSrc === '') {
+    ElMessage({
+      showClose: true,
+      message: '请选择图片再预览',
+      type: 'info',
+    });
+    return;
+  }
+
   state.dialogConfig.showDialog = true;
   state.dialogConfig.dialogItem.pname = state.uploadMsgForm.pname;
   state.dialogConfig.dialogItem.previewSrc = state.previewSrc;
 };
 const loadRemove = file => {
-  console.log(file);
+  imgFileFlag = {};
+  state.previewSrc = '';
 };
 </script>
 
@@ -287,6 +296,9 @@ const loadRemove = file => {
   flex: 1;
   padding: 0 10px;
   margin: 10px 0;
+}
+.previewP span {
+  cursor: pointer;
 }
 .upLeft {
   flex: 1;

@@ -53,7 +53,6 @@ const getUpMsg = async () => {
 watch(
   () => route.params,
   newVal => {
-    console.log(newVal);
     if (newVal) return;
     getUpMsg();
     getFsOrFl();
@@ -88,6 +87,7 @@ const toPath = path => {
 <style scoped>
 .Means {
   position: relative;
+  height: calc(100vh - 60px);
 }
 .Means .leftBack {
   position: absolute;

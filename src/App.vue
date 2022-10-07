@@ -43,16 +43,14 @@ a {
 .Rank,
 .Home,
 .Liked {
-  height: calc(100vh - 120px);
+  height: calc(100vh - 60px);
   /* overflow-y: scroll; */
   width: 100%;
+  overflow-y: hidden;
   display: flex;
   justify-content: center;
 }
-.photoVirualList {
-  position: relative;
-  width: 1200px;
-  margin: 0 auto;
-  overflow-y: scroll;
+.el-main {
+  --el-main-padding: 0;
 }
 </style>
