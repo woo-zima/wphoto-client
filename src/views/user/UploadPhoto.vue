@@ -62,6 +62,7 @@
 import * as qiniu from 'qiniu-js';
 import { computed, inject, onMounted, reactive, ref } from 'vue';
 import { loginStore } from '../../store';
+import { Mydebounce } from '@/modules/my-Tool/tools';
 
 const store = loginStore();
 const uploadForm = ref();
@@ -235,7 +236,7 @@ const uploadPhoto = async (file, res) => {
 const uploadError = (err, file, fileList) => {
   console.log(err);
 };
-const onSubmit = Form => {
+const onSubmit = Mydebounce(Form => {
   console.log('submit!', uploadFile);
   if (!Form) return;
   if (Object.keys(imgFileFlag).length === 0) {
@@ -256,7 +257,7 @@ const onSubmit = Form => {
       return false;
     }
   });
-};
+});
 const resetForm = formEl => {
   if (!formEl) return;
   formEl.resetFields();
