@@ -130,7 +130,9 @@ const handleSearch = item => {
 };
 
 const setModel = () => {
-  console.log('setModal');
+  router.push({
+    path: `/setUp`,
+  });
 };
 const toInformation = () => {
   let uid = store.userDeail.uid || 0;

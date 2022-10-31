@@ -66,11 +66,11 @@ const routes = [
     },
     component: () => import('../views/user/UploadPhoto.vue'),
   },
-  // {
-  //   path: '/photoDetail',
-  //   name: 'photoDetail',
-  //   component: () => import('../views/PhotoDetail.vue'),
-  // },
+  {
+    path: '/setUp',
+    name: 'setUp',
+    component: () => import('../views/user/setUp.vue'),
+  },
 ];
 
 const router = createRouter({

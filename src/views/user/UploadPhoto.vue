@@ -141,10 +141,10 @@ const changFile = (file, fileList) => {
     });
     return false;
   }
-  if (fileList.length > 1) {
+  if (fileList.length > 5) {
     ElMessage({
       showClose: true,
-      message: '上传文件最大数量为1!',
+      message: '上传文件最大数量为5!',
       type: 'error',
     });
     return false;
@@ -237,7 +237,6 @@ const uploadError = (err, file, fileList) => {
   console.log(err);
 };
 const onSubmit = Mydebounce(Form => {
-  console.log('submit!', uploadFile);
   if (!Form) return;
   if (Object.keys(imgFileFlag).length === 0) {
     ElMessage({
@@ -251,9 +250,7 @@ const onSubmit = Mydebounce(Form => {
     if (valid) {
       uploadFile.value.submit();
       // console.log(state.uploadMsgForm);
-      console.log('submit2!');
     } else {
-      console.log('error submit!');
       return false;
     }
   });
