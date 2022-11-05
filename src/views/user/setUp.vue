@@ -16,6 +16,12 @@
       <div class="edit-content">
         <div class="form_block" id="base_information">
           <h3>基本信息</h3>
+
+          <div class="img_container">
+            <a>
+              <img src="/public/photo.ico" alt="默认头像" />
+            </a>
+          </div>
           <div class="base_info">
             <div class="form-item">
               <label for="nickname">昵称</label>
@@ -118,8 +124,8 @@ const checkActive = index => {
   white-space: nowrap;
 }
 .edit-nav li a.active {
-  border-left: 2px solid #0057ff;
-  color: #0057ff;
+  border-left: 2px solid #ec4d4d;
+  color: #ec4d4d;
   font-weight: bold;
 }
 .edit-nav {

@@ -1,60 +1,72 @@
 <template>
-  <div class="photoUp">
-    <div class="upContainer">
-      <div class="upLeft">
-        <el-upload
-          ref="uploadFile"
-          drag
-          class="avatar-uploader"
-          multiple
-          :action="state.uploadUrl"
-          :on-change="changFile"
-          :auto-upload="false"
-          accept="image/jpeg,image/gif,image/png,image/bmp"
-          :data="state.uploadData"
-          :on-success="handleAvatarSuccess"
-          :on-error="uploadError"
-          :before-upload="beforeAvatarUpload"
-          :on-remove="loadRemove"
-        >
-          <el-icon class="el-icon--upload">
-            <img src="@/assets/upload.svg" style="display: block; width: 100px; height: 100px" />
-          </el-icon>
-          <div class="el-upload__text">
-            拖拽文件到这儿 or
-            <em>点击此处</em>
-          </div>
-          <template #tip>
-            <div class="el-upload__tip">jpg/png 文件最大不能超过2MB</div>
-          </template>
-        </el-upload>
+  <div id="load-content">
+    <div class="photoUp">
+      <div class="upContainer">
+        <div class="upLeft">
+          <el-upload
+            ref="uploadFile"
+            drag
+            class="avatar-uploader"
+            multiple
+            :action="state.uploadUrl"
+            :on-change="changFile"
+            :auto-upload="false"
+            accept="image/jpeg,image/gif,image/png,image/bmp"
+            :data="state.uploadData"
+            :on-success="handleAvatarSuccess"
+            :on-error="uploadError"
+            :before-upload="beforeAvatarUpload"
+            :on-remove="loadRemove"
+          >
+            <el-icon class="el-icon--upload">
+              <img src="@/assets/upload.svg" style="display: block; width: 100px; height: 100px" />
+            </el-icon>
+            <div class="el-upload__text">
+              拖拽文件到这儿 or
+              <em>点击此处</em>
+            </div>
+            <template #tip>
+              <div class="el-upload__tip">jpg/png 文件最大不能超过2MB</div>
+            </template>
+          </el-upload>
+        </div>
       </div>
-      <div class="upRight">
-        <el-form ref="uploadForm" :model="state.uploadMsgForm" :rules="rules" label-width="auto">
-          <el-form-item prop="pname" label="作品标题">
-            <el-input v-model="state.uploadMsgForm.pname" />
-          </el-form-item>
+      <div class="previewP">
+        <div class="upRight setP">
+          <el-form ref="uploadForm" :model="state.uploadMsgForm" :rules="rules" label-width="auto">
+            <el-form-item prop="pname" label="作品标题">
+              <el-input
+                v-model="state.uploadMsgForm.pname"
+                clearable
+                class="P_input"
+                size="large"
+                placeholder="Please Input"
+              />
+            </el-form-item>
 
-          <el-form-item label="Tag" prop="tag">
-            <el-checkbox-group v-model="state.uploadMsgForm.tag">
-              <el-checkbox-button label="风景" name="type" />
-              <el-checkbox-button label="动漫" name="type" />
-              <el-checkbox-button label="暗" name="type" />
-              <el-checkbox-button label="人物" name="type" />
-            </el-checkbox-group>
-          </el-form-item>
+            <el-form-item label="Tag" prop="tag">
+              <el-checkbox-group v-model="state.uploadMsgForm.tag">
+                <el-checkbox-button label="风景" name="type" />
+                <el-checkbox-button label="动漫" name="type" />
+                <el-checkbox-button label="暗" name="type" />
+                <el-checkbox-button label="人物" name="type" />
+              </el-checkbox-group>
+            </el-form-item>
 
-          <el-form-item>
-            <el-button type="primary" @click="onSubmit(uploadForm)">上传</el-button>
-            <el-button @click="resetForm(uploadForm)">取消</el-button>
-          </el-form-item>
-        </el-form>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit(uploadForm)">上传</el-button>
+              <el-button @click="resetForm(uploadForm)">取消</el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div class="setP">
+          <span class="preview" @click="showPreview">查看预览</span>
+          <span class="preview" @click="showPreview">保存为草稿</span>
+        </div>
       </div>
-    </div>
-    <div class="previewP">
-      <span @click="showPreview">UPLOAD PREVIEW</span>
     </div>
   </div>
+
   <DialogMain :dialogConfig="state.dialogConfig" />
 </template>
 
@@ -280,36 +292,83 @@ const loadRemove = file => {
 </script>
 
 <style scoped>
-.photoUp {
+#load-content {
+  margin-left: auto;
+  margin-right: auto;
   width: 100%;
-  height: 80vh;
+  height: calc(100vh - 120px);
+  padding-bottom: 20px;
+}
+.photoUp {
+  max-width: 100%;
   display: flex;
   justify-content: center;
-  gap: 20px;
-  border-radius: 10px;
-  overflow: hidden;
+  margin: 30px;
 }
-.photoUp .upContainer,
-.photoUp .previewP {
-  flex: 1;
-  padding: 0 10px;
-  margin: 10px 0;
+.photoUp .upContainer {
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  min-width: 350px;
+  background: #fff;
+  box-shadow: 0 1px 5px #c7c7c7;
+  min-height: calc(100vh - 55px - 60px);
+  width: 100%;
+  z-index: 1;
 }
+.previewP {
+  height: 100%;
+  margin-left: 20px;
+  min-width: 240px;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 50px;
+  width: 240px;
+}
+.previewP .setP {
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: 0 1px 5px #c7c7c7;
+  display: -webkit-box;
+  display: flex;
+  flex-basis: 100%;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  flex-flow: row wrap;
+  padding: 20px 15px 10px;
+}
+
 .previewP span {
   cursor: pointer;
 }
-.upLeft {
-  flex: 1;
+.upContainer .upLeft {
+  padding: 0 7.1%;
+}
+.previewP .preview {
+  padding: 4px 8px;
+  margin-left: 5px;
+  border: 1px solid;
+  border-radius: 4px;
+  color: #fff;
+  background-color: #202d40;
 }
 
 .upRight {
   margin-top: 50px;
-  flex: 1;
+}
+.upRight .P_input {
+  min-width: 100px;
 }
 
 @media screen and (max-width: 730px) {
-  .photoUp {
-    flex-direction: column;
+  .upRight .P_input {
+    /* width: 50%; */
+  }
+}
+@media screen and (max-width: 500px) {
+  .previewP {
+    min-width: 180px;
   }
 }
 </style>

@@ -168,6 +168,7 @@ const logOut = () => {
   width: 100%;
   display: flex;
   overflow: hidden;
+  box-shadow: rgb(0 0 0 / 20%) 0px -2px 6px;
 }
 
 .input-with-select {

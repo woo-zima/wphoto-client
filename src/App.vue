@@ -53,4 +53,7 @@ a {
 .el-main {
   --el-main-padding: 0;
 }
+.el-header {
+  padding: 0;
+}
 </style>
