@@ -2,31 +2,21 @@
 
 wphoto vue3 version
 
-
-
 - 首页
 
 ![e1](./src/assets/img/e1.PNG)
-
-
 
 - 页面适配
 
   ![e1_1](./src/assets/img/e1_1.PNG)
 
-
-
 - 点开图片详情
 
 ![e2](./src/assets/img/e2.PNG)
 
-
-
 - 评论区域
 
 ![e3](./src/assets/img/e3.PNG)
-
-
 
 - 上传页面
 
@@ -36,15 +26,9 @@ wphoto vue3 version
 
 ![e5](./src/assets/img/e5.PNG)
 
-
-
 - 个人主页
 
-
-
 ![e6](./src/assets/img/e6.PNG)
-
-
 
 - 关注/粉丝
 
@@ -67,4 +51,3 @@ npm run serve
 ```shell
 npm run build
 ```
-

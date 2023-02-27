@@ -242,7 +242,9 @@ const getCoreWidth = () => {
 };
 
 function setStyle(el, width, height) {
-  el.setAttribute('style', `width:${width}px;height:${height}px`);
+  if (el) {
+    el.setAttribute('style', `width:${width}px;height:${height}px`);
+  }
 }
 function setColumn(el, number) {
   el.setAttribute('column', number);
@@ -258,15 +260,6 @@ function throttle(func, ms = 300) {
     }, ms);
   };
 }
-function debounce(cb, delay = 500) {
-  let timer = null;
-  return function () {
-    timer && clearTimeout(timer);
-    timer = setTimeout(() => {
-      cb.apply(this, arguments);
-    }, delay);
-  };
-}
 </script>
 
 <style scoped>
@@ -278,16 +271,7 @@ function debounce(cb, delay = 500) {
   overflow-y: scroll;
   overflow-x: auto;
 }
-/* @media screen and (max-width: 1250px) {
-  .photoVirualList {
-    width: 900px;
-  }
-}
-@media screen and (max-width: 950px) {
-  .photoVirualList {
-    width: 500px;
-  }
-} */
+
 .virtual-collection {
   position: relative;
   margin: 10px auto;

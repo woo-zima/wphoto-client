@@ -3,6 +3,11 @@
     <div class="photoUp">
       <div class="upContainer">
         <div class="upLeft">
+          <div v-if="state.previewSrc" class="previewList">
+            <div class="prew" v-for="item in state.previewSrc">
+              <img :src="item" alt="photo" />
+            </div>
+          </div>
           <el-upload
             ref="uploadFile"
             drag
@@ -33,8 +38,8 @@
       </div>
       <div class="previewP">
         <div class="upRight setP">
-          <el-form ref="uploadForm" :model="state.uploadMsgForm" :rules="rules" label-width="auto">
-            <el-form-item prop="pname" label="作品标题">
+          <el-form ref="uploadForm" :model="state.uploadMsgForm" :rules="rules">
+            <el-form-item prop="pname" class="scroll-itme" label="作品标题">
               <el-input
                 v-model="state.uploadMsgForm.pname"
                 clearable
@@ -44,7 +49,7 @@
               />
             </el-form-item>
 
-            <el-form-item label="Tag" prop="tag">
+            <el-form-item class="scroll-itme" prop="tag" label="Tag">
               <el-checkbox-group v-model="state.uploadMsgForm.tag">
                 <el-checkbox-button label="风景" name="type" />
                 <el-checkbox-button label="动漫" name="type" />
@@ -107,11 +112,11 @@ const state = reactive({
     dialogItem: {
       uptime: '',
       pname: '',
-      previewSrc: '',
+      previewSrc: [],
     },
     preview: false,
   },
-  previewSrc: '',
+  previewSrc: [],
 });
 const $api = inject('$api');
 const rules = reactive({
@@ -216,7 +221,7 @@ const createReader = function (file) {
       state.uploadFormData.pheight = this.height;
     };
     image.src = e.target.result;
-    state.previewSrc = e.target.result;
+    state.previewSrc.push(e.target.result);
   };
   reader.readAsDataURL(file);
 };
@@ -272,7 +277,7 @@ const resetForm = formEl => {
   formEl.resetFields();
 };
 const showPreview = () => {
-  if (state.previewSrc === '') {
+  if (state.previewSrc.length === 0) {
     ElMessage({
       showClose: true,
       message: '请选择图片再预览',
@@ -283,11 +288,11 @@ const showPreview = () => {
 
   state.dialogConfig.showDialog = true;
   state.dialogConfig.dialogItem.pname = state.uploadMsgForm.pname;
-  state.dialogConfig.dialogItem.previewSrc = state.previewSrc;
+  state.dialogConfig.dialogItem.previewSrc = state.previewSrc.map(i => i);
 };
-const loadRemove = file => {
+const loadRemove = () => {
   imgFileFlag = {};
-  state.previewSrc = '';
+  state.previewSrc = [];
 };
 </script>
 
@@ -310,7 +315,8 @@ const loadRemove = file => {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   flex-direction: column;
-  min-width: 350px;
+  justify-content: center;
+  min-width: 300px;
   background: #fff;
   box-shadow: 0 1px 5px #c7c7c7;
   min-height: calc(100vh - 55px - 60px);
@@ -345,6 +351,9 @@ const loadRemove = file => {
 .upContainer .upLeft {
   padding: 0 7.1%;
 }
+.upLeft .previewList img {
+  width: 50%;
+}
 .previewP .preview {
   padding: 4px 8px;
   margin-left: 5px;
@@ -361,14 +370,20 @@ const loadRemove = file => {
   min-width: 100px;
 }
 
-@media screen and (max-width: 730px) {
+/* @media screen and (max-width: 730px) {
   .upRight .P_input {
-    /* width: 50%; */
+    width: 50%;
   }
-}
-@media screen and (max-width: 500px) {
+} */
+@media screen and (max-width: 600px) {
   .previewP {
-    min-width: 180px;
+    min-width: 130px;
+  }
+  .scroll-itme {
+    display: block;
+  }
+  .el-checkbox-button span {
+    padding: 8px 7px;
   }
 }
 </style>

@@ -19,18 +19,14 @@ const state = reactive({
 });
 const photoVirual = ref();
 const $api = inject('$api');
-// onBeforeMount(() => {
-//   window.addEventListener('resize', resetWindow, false);
-// });
+
 onMounted(() => {
-  // window.addEventListener('resize', resetWindow, false);
   nextPage(1);
 });
 const nextPage = async pageNum => {
   const res = await $api.photo.getPhotoList(pageNum);
   if (res) {
     state.picList.push(...res.data);
-    // console.log(state.picList);
   }
 };
 const resetColumn = number => {

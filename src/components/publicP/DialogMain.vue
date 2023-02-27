@@ -3,13 +3,7 @@
     <el-dialog :modelValue="dialogMainVisible" title="PHOTO" @close="closeDialogHandle">
       <div class="photoDetail">
         <div class="leftImg">
-          <img
-            :src="
-              dialogConfig.dialogItem.previewSrc ||
-              'http://wphoto.top/' + dialogConfig.dialogItem.purl
-            "
-            style="width: 100%"
-          />
+          <img :src="showSrc" style="width: 100%" />
         </div>
         <div class="rightMsg">
           <aside class="detail-author">
@@ -178,6 +172,13 @@ const toContentInformation = id => {
 const dialogMainVisible = computed(() => {
   return props.dialogConfig.showDialog;
 });
+const showSrc = computed(() => {
+  if (props.dialogConfig.dialogItem.purl) {
+    return 'http://wphoto.top/' + props.dialogConfig.dialogItem.purl;
+  } else {
+    return props.dialogConfig.dialogItem.previewSrc[0];
+  }
+});
 //获取更新
 watch(
   () => props.dialogConfig.dialogItem,
@@ -186,7 +187,8 @@ watch(
     nextTick(() => {
       randomColorToDom('.el-dialog');
     });
-    state.srcList = ['http://wphoto.top/' + newVal.purl];
+    state.srcList = newVal.previewSrc || ['http://wphoto.top/' + newVal.purl];
+    console.log(state.srcList);
     if (newVal.uptime != '') {
       getPhotoComment(newVal.pid);
       getPhotoDetail(newVal.pid);

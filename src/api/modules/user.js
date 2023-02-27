@@ -33,6 +33,17 @@ export function register(params) {
     data: params,
   });
 }
+
+export function updataPass(name, pass) {
+  return axios({
+    url: '/user/updatePass',
+    method: 'post',
+    data: {
+      username: name,
+      password: pass,
+    },
+  });
+}
 // 用户头像上传
 export function uploadImg(param) {
   return axios({

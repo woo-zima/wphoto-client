@@ -2,10 +2,10 @@
   <div class="Rank">
     <WaterFall
       :picList="state.picList"
-      :column="state.column"
       @nextPage="nextPage"
       class="photoVirualList"
-      ref="photoVirual"
+      :column="resetWindow()"
+      @resetColumn="resetColumn"
     ></WaterFall>
   </div>
 </template>
@@ -27,6 +27,23 @@ const nextPage = async pageNum => {
   if (res) {
     state.picList.push(...res.data);
     // console.log(state.picList);
+  }
+};
+
+const resetColumn = number => {
+  resetWindow();
+};
+const resetWindow = () => {
+  let { clientWidth } = document.scrollingElement;
+  if (clientWidth >= 1200) {
+    state.column = 4;
+    return state.column;
+  } else if (clientWidth >= 890) {
+    state.column = 3;
+    return state.column;
+  } else {
+    state.column = 2;
+    return state.column;
   }
 };
 </script>

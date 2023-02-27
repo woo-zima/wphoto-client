@@ -44,7 +44,7 @@
 
         <div class="form_block" id="about_me">
           <h3>关于我</h3>
-          <div class="base_info">
+          <div class="about_info">
             <div class="form-item">
               <label for="nickname">About me</label>
               <input type="text" name="nickname" />
@@ -61,16 +61,17 @@
           <div class="pass_info">
             <div class="form-item">
               <label for="nickname">原密码</label>
-              <input type="password" name="nickname" />
+              <input type="password" v-model="passForm.oldpass" name="nickname" />
             </div>
             <div class="form-item">
               <label for="nickname">新密码</label>
-              <input type="password" name="nickname" />
+              <input type="password" v-model="passForm.newpass" name="nickname" />
             </div>
             <div class="form-item">
               <label for="nickname">确认密码</label>
-              <input type="password" name="nickname" />
+              <input type="password" v-model="passForm.validatapass" name="nickname" />
             </div>
+            <button @click="updataPassHandle">修改</button>
           </div>
         </div>
       </div>
@@ -79,18 +80,46 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive } from 'vue';
+import { inject, onMounted, reactive, toRefs } from 'vue';
 import { liList } from '@/api/modules/customData';
 
-onMounted(() => {
-  console.log(liList);
-});
+const $api = inject('$api');
 const state = reactive({
   activeIndex: 0,
+  passForm: {
+    oldpass: '',
+    newpass: '',
+    validatapass: '',
+  },
+});
+const { passForm } = toRefs(state);
+onMounted(() => {
+  console.log(liList);
 });
 
 const checkActive = index => {
   state.activeIndex = index;
+};
+
+const updataPassHandle = async () => {
+  console.log(state.passForm);
+  const res = await checkPass();
+  console.log(res);
+};
+
+const checkPass = () => {
+  const p = new Promise((resolve, reject) => {
+    const { oldpass, newpass, validatapass } = state.passForm;
+
+    if (!oldpass || !newpass || !validatapass) {
+      resolve('请输入内容！');
+    }
+    if (newpass !== validatapass) {
+      resolve('两次输入不一致！');
+    }
+    resolve('verified');
+  });
+  return p;
 };
 
 // const getLocationHash = computed(() => {
@@ -143,6 +172,38 @@ const checkActive = index => {
 .edit-content {
   float: right;
   width: calc(100% - 222px - 75px);
+}
+.img_container {
+  float: left;
+}
+.base_info {
+  position: relative;
+  padding-left: 34px;
+  overflow: hidden;
+}
+.base_info::before {
+  background: #e6e6e6;
+  content: '';
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 1px;
+}
+.base_info label {
+  padding-right: 5px;
+  font-size: 16px;
+}
+.base_info input {
+  padding: 0 10px;
+  height: 28px;
+  font-size: 13px;
+  line-height: normal;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.form-item {
+  padding: 10px 5px;
 }
 .edit-content .form_block {
   background: #fff;
